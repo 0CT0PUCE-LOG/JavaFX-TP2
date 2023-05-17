@@ -1,5 +1,6 @@
 package fr.umontpellier.iut.exercice4;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.IntegerProperty;
@@ -19,12 +20,13 @@ public class MainPersonnes {
 
     public static void main(String[] args) {
 
-        lesPersonnes = new SimpleListProperty<>(FXCollections.observableArrayList());
+        lesPersonnes = new SimpleListProperty<>(FXCollections.observableArrayList(personne -> new Observable[] {personne.ageProperty(),personne.villeDeNaissanceProperty()}));
         ageMoyen = new SimpleIntegerProperty(0);
+        nbParisiens = new SimpleIntegerProperty(0);
 
         DoubleBinding calculAgeMoyen = new DoubleBinding() {
             {
-                super.bind(lesPersonnes);
+                this.bind(lesPersonnes);
             }
 
             @Override
@@ -37,8 +39,28 @@ public class MainPersonnes {
             }
         };
 
+        calculnbParisiens = new IntegerBinding() {
+            {
+                this.bind(lesPersonnes);
+            }
+
+            @Override
+            protected int computeValue() {
+                int sommeP = 0;
+                for (Personne p : lesPersonnes) {
+                    if (p.getVilleDeNaissance().equals("Paris")) {
+                        sommeP++;
+                    }
+                }
+                return sommeP;
+            }
+        };
+
+        ageMoyen.bind(calculAgeMoyen);
+        nbParisiens.bind(calculnbParisiens);
+
         question1();
-//        question2();
+        question2();
     }
 
     public static void question1() {

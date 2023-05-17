@@ -28,4 +28,15 @@ public class Personne {
     public double getAge() {
         return age.getValue();
     }
+
+    public IntegerProperty ageProperty() {
+        return age;
+    }
+    public StringProperty villeDeNaissanceProperty() {
+        return villeDeNaissance;
+    }
+
+    public String getVilleDeNaissance() {
+        return villeDeNaissance.getValue();
+    }
 }
