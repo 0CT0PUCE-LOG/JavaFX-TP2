@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.exercice2;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -34,6 +35,8 @@ public class Palette extends Application {
 
     private EventHandler<ActionEvent> gestionnaireEvenement;
 
+    private ChangeListener<Number> nbClicsListener;
+
     @Override
     public void start(Stage primaryStage) {
         root = new BorderPane();
@@ -42,6 +45,12 @@ public class Palette extends Application {
         texteDuHaut.setFont(Font.font("Tahoma",FontWeight.NORMAL, 20));
         BorderPane.setAlignment(texteDuHaut, Pos.CENTER);
         texteDuBas = new Label();
+
+        nbClicsListener = (observable, oldValue, newValue) -> {
+            texteDuBas.setText("Nombre de clics sur " + sourceOfEvent.getText() + " : " + sourceOfEvent.getNbClics());
+            texteDuHaut.setText("Couleur préférée : " + sourceOfEvent.getText());
+            texteDuHaut.setStyle("-fx-text-fill: " + sourceOfEvent.getCouleur() + ";");
+        };
 
         panneau = new Pane();
         panneau.setPrefSize(400,200);
@@ -55,11 +64,13 @@ public class Palette extends Application {
         bas.setAlignment(Pos.CENTER_RIGHT);
 
         vert = new CustomButton("Vert", "#31BCA4");
+        vert.nbClicsProperty().addListener(nbClicsListener);
         rouge = new CustomButton("Rouge", "#F21411");
         bleu = new CustomButton("Bleu", "#3273A4");
 
         gestionnaireEvenement = (event) -> {
             sourceOfEvent = (CustomButton) event.getSource();
+            sourceOfEvent.setNbClics(sourceOfEvent.getNbClics() + 1);
         };
 
         vert.setOnAction(gestionnaireEvenement);

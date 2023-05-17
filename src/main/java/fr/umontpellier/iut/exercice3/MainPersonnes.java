@@ -16,9 +16,36 @@ public class MainPersonnes  {
 
         lesPersonnes = FXCollections.observableArrayList();
 
-//        unChangementListener = à completer
+        unChangementListener = new ListChangeListener<Personne>() {
+            @Override
+            public void onChanged(Change<? extends Personne> change) {
+                while (change.next()){
+                    if (change.wasAdded()) {
+                        //si la personne ajouté est Pierre alors on affiche "Ajout de Pierre"
+                        if (change.getAddedSubList().get(0).getNom().equals("Pierre"))
+                            System.out.println("Ajout de Pierre");
+                        else{
+                            System.out.println("Ajout de " + change.getAddedSubList());
+                        }
+                    }
+                    else if (change.wasRemoved()) {
+                        //si la personne supprimé est Paul alors on affiche "Suppression de Paul"
+                        if (change.getRemoved().get(0).getNom().equals("Paul"))
+                            System.out.println("Suppression de Paul");
+                        else{
+                            System.out.println("Suppression de " + change.getRemoved());
+                        }
+                    }
+                    else if (change.wasUpdated()) {
+                        System.out.println("Mise à jour de " + change.getList());
+                    }
+                }
+            }
+        };
 
         lesPersonnes.addListener(unChangementListener);
+
+        question3();
     }
 
     public static void question1() {

@@ -1,5 +1,6 @@
 package fr.umontpellier.iut.exercice4;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -20,6 +21,21 @@ public class MainPersonnes {
 
         lesPersonnes = new SimpleListProperty<>(FXCollections.observableArrayList());
         ageMoyen = new SimpleIntegerProperty(0);
+
+        DoubleBinding calculAgeMoyen = new DoubleBinding() {
+            {
+                super.bind(lesPersonnes);
+            }
+
+            @Override
+            protected double computeValue() {
+                double somme = 0;
+                for (Personne p : lesPersonnes) {
+                    somme += p.getAge();
+                }
+                return somme / lesPersonnes.size();
+            }
+        };
 
         question1();
 //        question2();

@@ -24,4 +24,8 @@ public class Personne {
     public void setVilleDeNaissance(String ville) {
         villeDeNaissance.setValue(ville);
     }
+
+    public double getAge() {
+        return age.getValue();
+    }
 }

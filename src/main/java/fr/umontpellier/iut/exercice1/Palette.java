@@ -116,7 +116,7 @@ public class Palette extends Application {
                 boolean fusible = false;
                 while (true) {
                     try {
-                        int time = 10;
+                        int time = 1;
                         if(time< 500 && !fusible){
                             time++;
                         }
